@@ -5,6 +5,9 @@ import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
 import datetime as dt
+from scripts.EDA import prueba
+
+
 
 # Inicializar la aplicación
 app = dash.Dash(
@@ -151,8 +154,8 @@ app.layout = html.Div(
 @app.callback(
     Output("plot_series", "figure"),
     [Input("datepicker-inicial", "date"),
-     Input("dropdown-hora-inicial", "value"),
-     Input("slider-proyeccion", "value")]
+    Input("dropdown-hora-inicial", "value"),
+    Input("slider-proyeccion", "value")]
 )
 def update_plot(date, hour, proy):
     if date and hour is not None:
