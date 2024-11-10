@@ -28,7 +28,7 @@ def generate_control_card(data):
         ]
     )
 
-def plot_region_and_heatmap(data,ShipName=None, country_coordinates=coords):
+def plot_heatmap(data,ShipName=None, country_coordinates=coords):
     if ShipName!=None:
         data=data[data['Ship Name']==ShipName] 
     country = data['Country'].value_counts()
