@@ -53,7 +53,7 @@ H5, H3 {
 }
 
 #left-column {
-    background-color: #252e3f;
+    background-color: #333;
     margin-top: 20px;
     padding: 0rem 2rem;
     display: flex;
@@ -64,7 +64,7 @@ H5, H3 {
 
 #right-column {
     margin-top: 20px;
-    background-color: #252e3f;
+    background-color: #333;
     padding: 0rem 2rem;
     min-height: calc(100vh - 5.5rem);
 }
@@ -99,14 +99,14 @@ H5, H3 {
 }
 
 #model_graph, #cpd_card {
-    background-color: #252e3f;
+    background-color: #333;
     padding: 1rem;
     margin: auto;
     margin-top: 20px;
 }
 
 #control-card {
-    background-color: #252e3f;
+    background-color: #333;
 }
 
 
@@ -156,12 +156,12 @@ H5, H3 {
 }
 
 .Select-menu-outer {
-    background-color: #252e3f !important;
+    background-color: #333 !important;
     border: 1px solid #7fafdf !important;
 }
 
 .Select div {
-    background-color: #252e3f !important;
+    background-color: #333 !important;
 }
 
 .Select-menu-outer div:hover {
@@ -182,28 +182,28 @@ H5, H3 {
 /* Date picker*/
 .DateInput, .DateInput_1 {
     border-radius: 4px 0 0 4px !important;
-    background-color: #252e3f !important;
+    background-color: #333 !important;
 }
 
 .DateInput_input, .DateInput_input_1 {
     Height: 34px !important;
     Width: 100% !important;
     border-radius: inherit;
-    background-color: #252e3f !important;
+    background-color: #333 !important;
     color: #7fafdf !important;
 }
 
 .SingleDatePickerInput__withBorder {
     border-radius: 4px 0 0 4px;
     border: 1px solid #ccc !important;
-    background-color: #252e3f !important;
+    background-color: #333 !important;
 }
 
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #slider-container {
-    background-color: #252e3f;
+    background-color: #333;
     padding: 2rem 6rem 4rem 4rem;
     height: 8rem;
 }
@@ -217,7 +217,7 @@ H5, H3 {
 }
 
 .rc-slider-rail {
-    background-color: #1d2731 !important
+    background-color: #333 !important
 }
 
 /*
