@@ -1,7 +1,7 @@
-from scripts.dashboard import initialize_app, generate_control_card, plot_heatmap, plot_time_in_port, plot_time_bw_arrives, plot_time_bw_arrives_day
+from scripts.dashboard import initialize_app, generate_control_card, plot_heatmap, plot_time_in_port, plot_time_bw_arrives, plot_time_bw_arrives_day,create_histogram_container
 from scripts.ETL import load_data
 from scripts.modelo import rand_class
-from dash import html, dcc
+from dash import html
 from dash.dependencies import Input, Output
 
 
@@ -15,7 +15,6 @@ data=load_data(datasource)
 # Uso de la función con el dataset df_clean
 location_accuracy,location_mse,location_r2,predicted_location=rand_class(data)
 
-# Layout de la aplicación
 # Layout de la aplicación
 app.layout = html.Div(
     id="app-container",
@@ -65,8 +64,8 @@ app.layout = html.Div(
                     children=[
                         html.H4("Estadísticas del modelo", style={'font-size': '2.5rem', 'font-weight': 'bold', 'margin-bottom': '20px', 'color': '#fff'}),  # Título en blanco
                         html.P(id="location-accuracy", style={'font-size': '2.0rem', 'color': '#ccc'}),  # Texto en gris claro
-                        html.P(id="location-mse", style={'font-size': '2.0rem', 'color': '#ccc'}),  # Texto en gris claro
-                        html.P(id="location-r2", style={'font-size': '2.0rem', 'color': '#ccc'}),  # Texto en gris claro
+                        html.P(id="location-precision", style={'font-size': '2.0rem', 'color': '#ccc'}),  # Texto en gris claro
+                        html.P(id="location-f1", style={'font-size': '2.0rem', 'color': '#ccc'}),  # Texto en gris claro
                     ],
                     style={'background-color': '#444', 'padding': '10px', 'border-radius': '10px', 'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)'}  # Fondo gris ligeramente más claro
                 ),
@@ -98,83 +97,18 @@ app.layout = html.Div(
         html.H3("Información histórica del barco seleccionado en el puerto predicho", style={'font-size': '3.2rem', 'font-weight': 'bold', 'color': '#1b8ed1', 'text-align': 'center'}),
 
 
-        # Contenedor del histograma de tiempo en puerto predicho
-        html.Div(
+        # Crear los contenedores de histogramas
+        create_histogram_container(
             id="histogram-container",
-            children=[
-                html.H4(
-                    "Histograma de tiempo en puerto predicho",
-                    style={
-                        'margin': 'auto',
-                        'text-align': 'center',
-                        'font-size': '2.5rem',
-                        'font-weight': 'bold',
-                        'color': '#fff'
-                    }
-                ),  # Título en blanco
-                dcc.Graph(id="histogram-port-time"),
-            ],
-            style={
-                'border': '2px solid #dcdcdc',
-                'padding': '20px',
-                'border-radius': '10px',
-                'background-color': '#444',  # Fondo gris oscuro
-                'margin': '20px 0',
-                'box-shadow': '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            }
+            title="Histograma de tiempo en puerto predicho",
+            graph_ids=["histogram-port-time"]
         ),
 
-        # Contenedor del histograma de tiempo en puerto por año
-        html.Div(
+        create_histogram_container(
             id="histogram-by-year-container",
-            children=[
-                html.H4(
-                    "Histograma del tiempo en puerto por año",
-                    style={
-                        'margin': 'auto',
-                        'text-align': 'center',
-                        'font-size': '2.5rem',
-                        'font-weight': 'bold',
-                        'color': '#fff'
-                    }
-                ),  # Título en blanco
-                dcc.Graph(id="histogram-port-time-by-year"),  # Identificador para el gráfico
-            ],
-            style={
-                'border': '2px solid #dcdcdc',
-                'padding': '20px',
-                'border-radius': '10px',
-                'background-color': '#444',  # Fondo gris oscuro
-                'margin': '20px 0',
-                'box-shadow': '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            }
-        ),
-
-        # Contenedor del histograma de tiempo en puerto por día de la semana
-        html.Div(
-            id="histogram-by-day-container",
-            children=[
-                html.H4(
-                    "Histograma del tiempo en puerto por día de la semana",
-                    style={
-                        'margin': 'auto',
-                        'text-align': 'center',
-                        'font-size': '2.5rem',
-                        'font-weight': 'bold',
-                        'color': '#fff'
-                    }
-                ),  # Título en blanco
-                dcc.Graph(id="histogram-by-day-container"),  # Identificador para el gráfico
-            ],
-            style={
-                'border': '2px solid #dcdcdc',
-                'padding': '20px',
-                'border-radius': '10px',
-                'background-color': '#444',  # Fondo gris oscuro
-                'margin': '20px 0',
-                'box-shadow': '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            }
-        ),
+            title="Histograma del tiempo en puerto periodos",
+            graph_ids=["histogram-port-time-by-year","histogram-by-day-container"]
+        )
     ],
 )
 
@@ -185,8 +119,8 @@ app.layout = html.Div(
         Output("folium-map", "srcDoc"),
         Output("predicted-location", "children"),
         Output("location-accuracy", "children"),
-        Output("location-mse", "children"),
-        Output("location-r2", "children"),
+        Output("location-precision", "children"),
+        Output("location-f1", "children"),
         Output("histogram-port-time", "figure"),
         Output("histogram-port-time-by-year", "figure"),
         Output("histogram-by-day-container", "figure")
@@ -203,13 +137,13 @@ def update_plot(ShipName):
     map_html = plot_heatmap(data,ShipName)
     predicted_location,location_accuracy,location_mse,location_r2  = rand_class(data, ShipName) 
     accuracy_text = f"Exactitud de Ubicación (Clasificación): {location_accuracy * 100:.2f}%" 
-    mse_text = f"Precision de Ubicación: {location_mse:.2f}" 
-    r2_text = f"f1 de Ubicación: {location_r2:.2f}"
+    precision_text = f"Precision de Ubicación: {location_mse:.2f}" 
+    f1_text = f"f1 de Ubicación: {location_r2:.2f}"
     his_timeinport = plot_time_in_port(data, ShipName, predicted_location)
     his_timeinport_yr = plot_time_bw_arrives(data, ShipName, predicted_location)
     his_timeinport_day = plot_time_bw_arrives_day(data, ShipName, predicted_location)
 
-    return map_html, predicted_location,accuracy_text, mse_text, r2_text, his_timeinport, his_timeinport_yr, his_timeinport_day
+    return map_html, predicted_location,accuracy_text, precision_text, f1_text, his_timeinport, his_timeinport_yr, his_timeinport_day
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", debug=True)

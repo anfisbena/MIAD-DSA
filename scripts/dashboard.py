@@ -5,8 +5,7 @@ from folium.plugins import HeatMap
 from scripts.countryCoordinates import country_coordinates as coords
 import plotly.express as px
 import pandas as pd
-from branca.colormap import linear
-
+from dash import html, dcc
 
 def initialize_app():
     app = dash.Dash(
@@ -171,6 +170,43 @@ def plot_time_bw_arrives_day(data, ShipName=None, predicted_location=None):
 
     return fig
 
+def create_histogram_container(id, title, graph_ids):
+    if isinstance(graph_ids, list):
+        graphs = [dcc.Graph(id=graph_id) for graph_id in graph_ids]
+    else:
+        graphs = [dcc.Graph(id=graph_ids)]
+    
+    return html.Div(
+        id=id,
+        children=[
+            html.H4(
+                title,
+                style={
+                    'margin': 'auto',
+                    'text-align': 'center',
+                    'font-size': '2.5rem',
+                    'font-weight': 'bold',
+                    'color': '#fff'
+                }
+            ),  # Título en blanco
+            html.Div(
+                children=graphs,
+                style={
+                    'display': 'flex',
+                    'flex-direction': 'row',
+                    'justify-content': 'space-around'
+                }
+            )
+        ],
+        style={
+            'border': '2px solid #dcdcdc',
+            'padding': '20px',
+            'border-radius': '10px',
+            'background-color': '#444',  # Fondo gris oscuro
+            'margin': '20px 0',
+            'box-shadow': '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        }
+    )
 
 
 
