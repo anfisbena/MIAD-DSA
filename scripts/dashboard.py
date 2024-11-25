@@ -4,7 +4,6 @@ import folium
 from folium.plugins import HeatMap
 from scripts.countryCoordinates import country_coordinates as coords
 import plotly.express as px
-import plotly.io as pio
 import pandas as pd
 from branca.colormap import linear
 

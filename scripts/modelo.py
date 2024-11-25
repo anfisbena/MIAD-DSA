@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import accuracy_score, precision_score, f1_score
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
@@ -58,13 +58,18 @@ def rand_class(df, ship_name=None):
 
   # Evaluación del modelo
   y_pred = model.predict(X_test)
-  location_accuracy = model.score(X_test, y_test)
-  location_mse = mean_squared_error(y_test, y_pred)
-  location_r2 = r2_score(y_test, y_pred)
+  # Asegurarse de que y_test y y_pred sean del mismo tipo (int)
+  y_test = y_test.astype(int)
+  y_pred = y_pred.astype(int)
+
+  location_accuracy = accuracy_score(y_test, y_pred)
+  location_precision = precision_score(y_test, y_pred, average='weighted')
+  location_f1 = f1_score(y_test, y_pred, average='weighted')
 
   # Decodificar la predicción para la próxima ubicación
   predicted_location = label_encoder.inverse_transform([y_pred[-1]])[0]
 
+  print(predicted_location, location_accuracy, location_precision, location_f1)
 
-  return predicted_location,location_accuracy,location_mse,location_r2
+  return predicted_location, location_accuracy, location_precision, location_f1
 

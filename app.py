@@ -202,9 +202,9 @@ def update_plot(ShipName):
         return "", "", "", "", "", {}, {}, {}
     map_html = plot_heatmap(data,ShipName)
     predicted_location,location_accuracy,location_mse,location_r2  = rand_class(data, ShipName) 
-    accuracy_text = f"Precisión de Ubicación (Clasificación): {location_accuracy * 100:.2f}%" 
-    mse_text = f"Error Cuadrático Medio de Ubicación: {location_mse:.2f}" 
-    r2_text = f"R^2 de Ubicación: {location_r2:.2f}"
+    accuracy_text = f"Exactitud de Ubicación (Clasificación): {location_accuracy * 100:.2f}%" 
+    mse_text = f"Precision de Ubicación: {location_mse:.2f}" 
+    r2_text = f"f1 de Ubicación: {location_r2:.2f}"
     his_timeinport = plot_time_in_port(data, ShipName, predicted_location)
     his_timeinport_yr = plot_time_bw_arrives(data, ShipName, predicted_location)
     his_timeinport_day = plot_time_bw_arrives_day(data, ShipName, predicted_location)
